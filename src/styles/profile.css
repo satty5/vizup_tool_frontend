@@ -1,0 +1,10 @@
+.prof-root{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:#000;color:#fff}
+.prof-card{width:520px;background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:2rem}
+.prof-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.prof-avatar{width:56px;height:56px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-weight:700}
+.prof-info .prof-name{font-size:1.125rem;font-weight:600}
+.prof-info .prof-email{color:#888}
+.prof-body{display:grid;gap:.75rem}
+.prof-row{display:flex;align-items:center;justify-content:space-between;background:#111;border:1px solid #222;border-radius:8px;padding:.75rem 1rem}
+.prof-row span{color:#aaa}
+

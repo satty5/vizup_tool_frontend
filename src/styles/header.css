@@ -1,0 +1,17 @@
+.app-header{background:#000;border-bottom:1px solid #333;position:sticky;top:0;z-index:50}
+.app-header-content{max-width:1400px;margin:0 auto;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.app-logo{display:flex;align-items:center;gap:1rem;text-decoration:none;color:#fff}
+.app-logo-icon{width:32px;height:32px;background:#fff;color:#000;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.app-nav{display:flex;gap:2rem;align-items:center}
+.app-nav a{color:#666;text-decoration:none;transition:color .2s}
+.app-nav a.active,.app-nav a:hover{color:#fff}
+.app-right{display:flex;align-items:center;gap:1rem;position:relative}
+.app-icon-btn{color:#666;text-decoration:none}
+.app-icon-btn:hover{color:#fff}
+.app-user{background:transparent;border:0;padding:0;cursor:pointer}
+.app-avatar{width:32px;height:32px;background:#fff;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.app-menu{position:absolute;right:0;top:calc(100% + .5rem);background:#0a0a0a;border:1px solid #222;border-radius:8px;min-width:180px;overflow:hidden}
+.app-menu-item{display:block;padding:.75rem 1rem;color:#ddd;text-decoration:none;text-align:left;border-bottom:1px solid #111;background:transparent;width:100%}
+.app-menu-item:hover{background:#111}
+.app-menu-item:last-child{border-bottom:none}
+

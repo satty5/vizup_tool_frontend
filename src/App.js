@@ -1,0 +1,77 @@
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider, useAuth } from './hooks/useAuth'
+import Header from './components/layout/Header'
+import AuthPage from './components/auth/AuthPage'
+import Dashboard from './pages/dashboard/Dashboard'
+import Monitor from './pages/monitor/Monitor'
+import Optimize from './pages/optimize/Optimize'
+import Profile from './pages/profile/Profile'
+import Settings from './pages/settings/Settings'
+import Diagnose from './pages/diagnose/Diagnose'
+
+// Main App Content
+function AppContent() {
+  const { user, loading } = useAuth()
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="spinner mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading Vizup Platform...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show auth page if not authenticated
+  if (!user) {
+    return <AuthPage />
+  }
+
+  // Show main application if authenticated
+  return (
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/monitor" element={<Monitor />} />
+        <Route path="/diagnose" element={<Diagnose />} />
+        <Route path="/optimize" element={<Optimize />} />
+        <Route path="/attribute" element={<ModulePlaceholder title="Attribute" />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
+      </Routes>
+    </Router>
+  )
+}
+
+// Temporary placeholder for dashboard (will be replaced in next milestone)
+// Dashboard is implemented; placeholder removed
+
+// Temporary placeholder for modules
+function ModulePlaceholder({ title }) {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          {title} Module
+        </h1>
+        <p className="text-gray-600">Coming in upcoming milestones...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main App Component
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  )
+}
+
+export default App
