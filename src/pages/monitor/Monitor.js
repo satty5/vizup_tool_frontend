@@ -3,7 +3,7 @@ import '../../styles/monitor.css'
 import { apiClient } from '../../lib/api'
 import { useMonitorProgress } from '../../hooks/useMonitorProgress' // Re-enabled with fixes
 import { supabase } from '../../utils/supabase'
-import MonitorDashboard from './MonitorDashboard'
+import EnterpriseMonitorDashboard from './EnterpriseMonitorDashboard'
 
 export default function Monitor() {
   const [runId, setRunId] = useState(null)
@@ -346,7 +346,7 @@ export default function Monitor() {
 
   // Show dashboard for existing users
   if (showDashboard) {
-    return <MonitorDashboard onNewAnalysis={handleNewAnalysis} onEditInputs={handleEditInputs} />
+    return <EnterpriseMonitorDashboard onNewAnalysis={handleNewAnalysis} onEditInputs={handleEditInputs} />
   }
 
   return (
