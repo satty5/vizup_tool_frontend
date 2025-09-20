@@ -6,6 +6,14 @@ const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || ''
 export const IS_CONFIGURED = Boolean(supabaseUrl && supabaseAnonKey)
 export const DEMO_MODE = (process.env.REACT_APP_DEMO_MODE || (!IS_CONFIGURED ? 'true' : 'false')).toLowerCase() === 'true'
 
+console.log('🔧 [supabase] Configuration loaded:', {
+  hasUrl: !!supabaseUrl,
+  hasKey: !!supabaseAnonKey,
+  isConfigured: IS_CONFIGURED,
+  demoMode: DEMO_MODE,
+  demoModeEnv: process.env.REACT_APP_DEMO_MODE
+})
+
 // Safe client: real when configured, minimal mock when not
 export const supabase = IS_CONFIGURED
   ? createClient(supabaseUrl, supabaseAnonKey)
@@ -88,9 +96,13 @@ export const auth = {
   },
   // Sign up with email and password
   signUp: async (email, password) => {
+    console.log('🎭 [supabase] signUp called - DEMO_MODE:', DEMO_MODE)
+    
     if (DEMO_MODE) {
+      console.log('🎯 [supabase] Demo mode enabled, simulating signup...')
+      
       // Demo mode - simulate successful signup with auto-signin
-      return {
+      const mockResponse = {
         data: {
           user: {
             id: `demo-user-${Date.now()}`,
@@ -106,6 +118,9 @@ export const auth = {
         },
         error: null
       }
+      
+      console.log('✅ [supabase] Demo signup successful:', mockResponse)
+      return mockResponse
     }
     
     try {

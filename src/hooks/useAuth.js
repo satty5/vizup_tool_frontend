@@ -29,12 +29,22 @@ export function AuthProvider({ children }) {
     // Listen for auth changes
     const { data: { subscription } } = auth.onAuthStateChange(
       async (event, session) => {
+        console.log('🔄 [useAuth] Auth state changed:', {
+          event,
+          hasSession: !!session,
+          hasUser: !!session?.user,
+          userEmail: session?.user?.email
+        })
+        
         setUser(session?.user ?? null)
         setLoading(false)
         
         // Clear any previous errors on successful auth
         if (session?.user) {
+          console.log('✅ [useAuth] User authenticated, clearing errors')
           setError(null)
+        } else {
+          console.log('❌ [useAuth] No user in session')
         }
       }
     )
@@ -44,32 +54,57 @@ export function AuthProvider({ children }) {
 
   // Sign up function
   const signUp = async (email, password) => {
+    console.log('🚀 [useAuth] signUp called with:', { email, password: '***' })
     setLoading(true)
     setError(null)
     
     try {
+      console.log('📞 [useAuth] Calling auth.signUp...')
       const { data, error } = await auth.signUp(email, password)
       
+      console.log('📥 [useAuth] auth.signUp response:', { 
+        hasData: !!data, 
+        hasError: !!error, 
+        hasUser: !!data?.user,
+        hasSession: !!data?.session,
+        error: error?.message 
+      })
+      
       if (error) {
+        console.error('❌ [useAuth] Signup error:', error)
         setError(error.message)
         return { success: false, error: error.message }
       }
       
       // Check if user is automatically signed in after signup
       if (data?.session && data?.user) {
+        console.log('✅ [useAuth] User automatically signed in after signup!')
+        console.log('👤 [useAuth] User data:', data.user)
+        console.log('🔑 [useAuth] Session data:', data.session)
+        
         // User is automatically signed in! Update auth state
         setUser(data.user)
+        console.log('🔄 [useAuth] Updated user state')
+        
         // Ensure profile exists
-        if (data.user) await profiles.ensureProfile(data.user)
+        if (data.user) {
+          console.log('📝 [useAuth] Ensuring profile exists...')
+          await profiles.ensureProfile(data.user)
+          console.log('✅ [useAuth] Profile ensured')
+        }
+        
         return { success: true, data, autoSignedIn: true }
       }
       
+      console.log('⚠️ [useAuth] No automatic sign-in - user needs email verification')
       return { success: true, data, autoSignedIn: false }
     } catch (error) {
+      console.error('💥 [useAuth] Unexpected signup error:', error)
       const errorMessage = error.message || 'An unexpected error occurred'
       setError(errorMessage)
       return { success: false, error: errorMessage }
     } finally {
+      console.log('🏁 [useAuth] signUp finished, loading:', false)
       setLoading(false)
     }
   }

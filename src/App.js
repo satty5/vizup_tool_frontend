@@ -14,8 +14,16 @@ import Diagnose from './pages/diagnose/Diagnose'
 function AppContent() {
   const { user, loading } = useAuth()
 
+  console.log('🏠 [App] Rendering AppContent:', {
+    hasUser: !!user,
+    userEmail: user?.email,
+    isLoading: loading,
+    timestamp: new Date().toISOString()
+  })
+
   // Show loading state
   if (loading) {
+    console.log('⏳ [App] Showing loading state')
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -28,10 +36,12 @@ function AppContent() {
 
   // Show auth page if not authenticated
   if (!user) {
+    console.log('🔐 [App] No user found, showing AuthPage')
     return <AuthPage />
   }
 
   // Show main application if authenticated
+  console.log('✅ [App] User authenticated, showing main app with dashboard')
   return (
     <Router>
       <Header />

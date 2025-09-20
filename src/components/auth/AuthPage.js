@@ -58,35 +58,56 @@ export default function AuthPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log('🎯 [AuthPage] Form submitted', { isSignUp, email: formData.email })
+    
     setLocalError('')
     setSuccessMessage('')
     
-    if (!validateForm()) return
+    if (!validateForm()) {
+      console.log('❌ [AuthPage] Form validation failed')
+      return
+    }
 
     try {
       if (isSignUp) {
+        console.log('📝 [AuthPage] Starting signup process...')
         const result = await signUp(formData.email, formData.password)
+        
+        console.log('📊 [AuthPage] Signup result:', {
+          success: result.success,
+          autoSignedIn: result.autoSignedIn,
+          hasData: !!result.data,
+          error: result.error
+        })
+        
         if (result.success) {
           if (result.autoSignedIn) {
-            // User is automatically signed in after signup!
+            console.log('🎉 [AuthPage] User auto-signed in! Setting success message...')
             setSuccessMessage('Account created successfully! Redirecting to dashboard...')
-            // The useAuth hook will automatically redirect to dashboard
-            // since the user is now authenticated
+            console.log('⏳ [AuthPage] Success message set, waiting for auth state change...')
           } else {
-            // Fallback case (email verification required)
+            console.log('📧 [AuthPage] Email verification required')
             setSuccessMessage('Account created! Please check your email for verification.')
             setFormData({ email: '', password: '', confirmPassword: '' })
           }
         } else {
+          console.error('❌ [AuthPage] Signup failed:', result.error)
           setLocalError(result.error || 'Failed to create account')
         }
       } else {
+        console.log('🔑 [AuthPage] Starting signin process...')
         const result = await signIn(formData.email, formData.password)
+        console.log('📊 [AuthPage] Signin result:', result)
+        
         if (!result.success) {
+          console.error('❌ [AuthPage] Signin failed:', result.error)
           setLocalError(result.error || 'Failed to sign in')
+        } else {
+          console.log('✅ [AuthPage] Signin successful!')
         }
       }
     } catch (err) {
+      console.error('💥 [AuthPage] Unexpected error in handleSubmit:', err)
       setLocalError('An unexpected error occurred. Please try again.')
     }
   }
