@@ -125,17 +125,33 @@ export default function AuthPage() {
         </div>
         <div className="login-section">
           <div className="demo-banner">Free Demo</div>
-          <div className="form-header"><h2>Welcome Back</h2><p>Sign in to your Vizup dashboard</p></div>
+          <div className="form-header">
+            <h2>{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
+            <p>{isSignUp ? 'Start your AI visibility journey today' : 'Sign in to your Vizup dashboard'}</p>
+          </div>
           <form onSubmit={handleSubmit}>
             <div className="form-group"><label className="form-label" htmlFor="email">Email Address</label><div className="input-wrapper"><span className="input-icon"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span><input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} className="form-input" placeholder="Enter your email" disabled={loading} autoComplete="email" /></div></div>
-            <div className="form-group"><label className="form-label" htmlFor="password">Password</label><div className="input-wrapper"><span className="input-icon"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span><input id="password" name="password" type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handleInputChange} className="form-input" placeholder="Enter your password" disabled={loading} autoComplete={isSignUp ? 'new-password' : 'current-password'} /><button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></button></div></div>
-            <div className="form-options"><div className="checkbox-wrapper"><input type="checkbox" id="remember" /><label htmlFor="remember">Remember me</label></div><button type="button" className="forgot-link" onClick={async()=>{ if(!formData.email){ setLocalError('Enter your email to reset password'); return } const { error } = await auth.resetPassword(formData.email); if(error){ setLocalError(error.message||'Reset failed') } else { setSuccessMessage('Password reset email sent') } }}>Forgot password?</button></div>
-            <button type="submit" className="btn-primary" disabled={loading}>{loading ? 'Signing in…' : 'Sign In'}</button>
+            <div className="form-group"><label className="form-label" htmlFor="password">{isSignUp ? 'Create Password' : 'Password'}</label><div className="input-wrapper"><span className="input-icon"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span><input id="password" name="password" type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handleInputChange} className="form-input" placeholder={isSignUp ? 'Create a secure password' : 'Enter your password'} disabled={loading} autoComplete={isSignUp ? 'new-password' : 'current-password'} /><button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></button></div></div>
+            {isSignUp && (
+              <div className="form-group"><label className="form-label" htmlFor="confirmPassword">Confirm Password</label><div className="input-wrapper"><span className="input-icon"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span><input id="confirmPassword" name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} value={formData.confirmPassword} onChange={handleInputChange} className="form-input" placeholder="Confirm your password" disabled={loading} autoComplete="new-password" /><button type="button" className="password-toggle" onClick={() => setShowConfirmPassword(!showConfirmPassword)}><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></button></div></div>
+            )}
+            {!isSignUp && (
+              <div className="form-options"><div className="checkbox-wrapper"><input type="checkbox" id="remember" /><label htmlFor="remember">Remember me</label></div><button type="button" className="forgot-link" onClick={async()=>{ if(!formData.email){ setLocalError('Enter your email to reset password'); return } const { error } = await auth.resetPassword(formData.email); if(error){ setLocalError(error.message||'Reset failed') } else { setSuccessMessage('Password reset email sent') } }}>Forgot password?</button></div>
+            )}
+            <button type="submit" className="btn-primary" disabled={loading}>
+              {loading ? (isSignUp ? 'Creating Account…' : 'Signing in…') : (isSignUp ? 'Create Account' : 'Sign In')}
+            </button>
             {currentError && <div className="alert alert-error mt-4">{currentError}</div>}
             {successMessage && <div className="alert alert-success mt-4">{successMessage}</div>}
             <div className="divider"><div className="divider-line"></div><span className="divider-text">OR</span><div className="divider-line"></div></div>
             <div className="social-login"><button type="button" className="social-btn" onClick={()=>auth.signInWithProvider('google')}>Google</button><button type="button" className="social-btn" onClick={()=>auth.signInWithProvider('linkedin')}>LinkedIn</button></div>
-            <div className="signup-link">Don't have an account? <button type="button" className="linklike" onClick={()=>setIsSignUp(true)}>Sign up for free</button></div>
+            <div className="signup-link">
+              {isSignUp ? (
+                <>Already have an account? <button type="button" className="linklike" onClick={toggleAuthMode}>Sign in</button></>
+              ) : (
+                <>Don't have an account? <button type="button" className="linklike" onClick={toggleAuthMode}>Sign up for free</button></>
+              )}
+            </div>
           </form>
         </div>
       </div>
