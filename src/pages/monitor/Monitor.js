@@ -1,18 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import '../../styles/monitor.css'
 import { apiClient } from '../../lib/api'
-// import { useMonitorProgress } from '../../hooks/useMonitorProgress' // Disabled to prevent auth loops
+import { useMonitorProgress } from '../../hooks/useMonitorProgress' // Re-enabled with fixes
 import { supabase } from '../../utils/supabase'
 
 export default function Monitor() {
   const [runId, setRunId] = useState(null)
-  // Temporarily disable SSE to prevent infinite 401 loops
-  // const { progress, status, currentActivity, error } = useMonitorProgress(runId)
+  const { progress, status, currentActivity, stats, error, isConnected } = useMonitorProgress(runId)
   
   useEffect(() => {
     const urlInput = document.getElementById('m-url')
     if (urlInput) urlInput.focus()
   }, [])
+
+  // Handle completion and auto-redirect to results
+  useEffect(() => {
+    if (status === 'completed') {
+      console.log('🎉 [Monitor] Run completed, redirecting to results...')
+      setTimeout(() => {
+        goToStep(4) // Go to results step
+      }, 2000) // 2 second delay to show completion
+    }
+  }, [status])
+
+  // Update progress display in real-time
+  useEffect(() => {
+    if (progress && progress.percent !== undefined) {
+      const progressElement = document.querySelector('#m-step3 .m-ring .center')
+      if (progressElement) {
+        progressElement.textContent = `${Math.round(progress.percent)}%`
+      }
+    }
+  }, [progress])
+
+  // Update stats display in real-time
+  useEffect(() => {
+    if (stats) {
+      const completedElement = document.querySelector('#m-step3 .m-p-stat:nth-child(3) .m-p-val')
+      if (completedElement && stats.completed !== undefined) {
+        completedElement.textContent = stats.completed
+      }
+    }
+  }, [stats])
+
+  // Update current activity display
+  useEffect(() => {
+    if (currentActivity) {
+      const statusElement = document.querySelector('#m-step3 .m-live')
+      if (statusElement) {
+        statusElement.innerHTML = `<span class="m-dot"></span>${currentActivity}`
+      }
+    }
+  }, [currentActivity])
 
   const goToStep = (id) => {
     document.querySelectorAll('.m-step').forEach(s => s.classList.remove('active'))
@@ -65,11 +104,8 @@ export default function Monitor() {
       console.log('✅ [Monitor] Monitor started successfully:', response)
       setRunId(response.run_id)
       
-      // Simulate realistic progress since SSE isn't working
-      console.log('🎬 [Monitor] Starting progress simulation...')
-      setTimeout(() => {
-        simulateProgress()
-      }, 500) // Small delay to ensure DOM is ready
+      // SSE will now handle real-time updates automatically
+      console.log('🔄 [Monitor] Starting real-time monitoring via SSE...')
       
     } catch (error) {
       console.error('Error starting monitoring:', error)
