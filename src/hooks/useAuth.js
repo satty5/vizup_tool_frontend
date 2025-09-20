@@ -69,6 +69,8 @@ export function AuthProvider({ children }) {
         hasSession: !!data?.session,
         error: error?.message 
       })
+      console.log('📋 [useAuth] Full response data:', data)
+      console.log('❗ [useAuth] Full response error:', error)
       
       if (error) {
         console.error('❌ [useAuth] Signup error:', error)

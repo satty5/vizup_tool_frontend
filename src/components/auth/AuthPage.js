@@ -79,6 +79,7 @@ export default function AuthPage() {
           hasData: !!result.data,
           error: result.error
         })
+        console.log('📋 [AuthPage] Full signup result:', result)
         
         if (result.success) {
           if (result.autoSignedIn) {
