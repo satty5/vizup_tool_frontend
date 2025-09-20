@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../../styles/profile.css'
 import { useAuth } from '../../hooks/useAuth'
-import { profiles } from '../../utils/supabase'
+import { apiClient } from '../../lib/api'
 
 export default function Profile() {
   const { user } = useAuth()
@@ -11,8 +11,13 @@ export default function Profile() {
   useEffect(() => {
     const load = async () => {
       if (!user) { setLoading(false); return }
-      const { data } = await profiles.getProfile(user.id)
-      setProfile(data || null)
+      try {
+        const data = await apiClient.get('/profiles/me')
+        setProfile(data || null)
+      } catch (error) {
+        console.error('Error loading profile:', error)
+        setProfile(null)
+      }
       setLoading(false)
     }
     load()

@@ -1,7 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../styles/monitor.css'
+import { apiClient } from '../../lib/api'
+import { useMonitorProgress } from '../../hooks/useMonitorProgress'
+import { supabase } from '../../utils/supabase'
 
 export default function Monitor() {
+  const [runId, setRunId] = useState(null)
+  const { progress, status, currentActivity, error } = useMonitorProgress(runId)
+  
   useEffect(() => {
     const urlInput = document.getElementById('m-url')
     if (urlInput) urlInput.focus()
@@ -33,15 +39,28 @@ export default function Monitor() {
     goToStep(2)
   }
 
-  const startProcessing = () => {
-    goToStep(3)
-    let progress = 0
-    const center = document.querySelector('.m-ring .center')
-    const id = setInterval(() => {
-      progress += 5
-      if (center) center.textContent = `${progress}%`
-      if (progress >= 100) { clearInterval(id); setTimeout(() => goToStep(4), 500) }
-    }, 150)
+  const startProcessing = async () => {
+    try {
+      const input = document.getElementById('m-url')
+      const url = input?.value
+      if (!url) return
+      
+      goToStep(3)
+      
+      // Start monitoring run
+      const response = await apiClient.post('/monitor/runs', {
+        website_url: url,
+        options: ['visibility', 'competition'] // Based on selected options
+      })
+      
+      setRunId(response.run_id)
+      
+      // The useMonitorProgress hook will handle real-time updates
+      
+    } catch (error) {
+      console.error('Error starting monitoring:', error)
+      alert('Failed to start monitoring. Please try again.')
+    }
   }
 
   // CSV mode handlers
@@ -108,31 +127,41 @@ export default function Monitor() {
     a.click()
   }
 
-  const processCsv = () => {
-    goToStep('m-csv-proc')
-    let progress = 0
-    const total = 128
-    const queries = [
-      'What is VIZUP and how does it work?',
-      'VIZUP pricing and plans comparison',
-      'Best AI visibility tools for startups',
-      'VIZUP vs competitors analysis',
-      'How to improve brand visibility in AI'
-    ]
-    const progressEl = document.getElementById('m-csv-progress')
-    const barEl = document.getElementById('m-csv-bar')
-    const completedEl = document.getElementById('m-csv-completed')
-    const currEl = document.getElementById('m-csv-current')
-    const id = setInterval(() => {
-      progress += 2
-      const completed = Math.floor((progress / 100) * total)
-      if (progressEl) progressEl.textContent = `${progress}%`
-      if (barEl) barEl.style.width = `${progress}%`
-      if (completedEl) completedEl.textContent = String(completed)
-      const idx = Math.floor((progress / 100) * queries.length)
-      if (idx < queries.length && currEl) currEl.textContent = `Processing: "${queries[idx]}"`
-      if (progress >= 100) { clearInterval(id); setTimeout(() => goToStep('m-csv-res'), 500) }
-    }, 100)
+  const processCsv = async () => {
+    try {
+      const fileInput = document.getElementById('csvFile')
+      const file = fileInput?.files[0]
+      if (!file) return
+      
+      goToStep('m-csv-proc')
+      
+      // Create FormData for file upload
+      const formData = new FormData()
+      formData.append('csv_file', file)
+      formData.append('platforms', JSON.stringify(['chatgpt', 'claude'])) // Based on selected options
+      
+      // Get auth headers for file upload
+      const { data: { session } } = await supabase.auth.getSession()
+      const token = session?.access_token
+      
+      // Upload CSV and start processing
+      const response = await fetch(`${apiClient.baseUrl}/monitor/csv-upload`, {
+        method: 'POST',
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+        body: formData
+      })
+      
+      if (!response.ok) throw new Error('Upload failed')
+      const data = await response.json()
+      
+      setRunId(data.run_id)
+      
+      // The useMonitorProgress hook will handle real-time updates
+      
+    } catch (error) {
+      console.error('Error processing CSV:', error)
+      alert('Failed to process CSV. Please try again.')
+    }
   }
 
   const downloadResults = () => {
