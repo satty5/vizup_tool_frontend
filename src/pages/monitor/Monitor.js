@@ -49,14 +49,14 @@ export default function Monitor() {
       
       const payload = {
         mode: 'auto',
-        website_url: url,
+        url: url,
         options: {
           platforms: ['chatgpt', 'claude', 'gemini'],
           analysis_types: ['visibility', 'competition']
         }
       }
       
-      console.log('🚀 [Monitor] Sending payload:', payload)
+      console.log('🚀 [Monitor] Sending payload:', JSON.stringify(payload, null, 2))
       
       // Start monitoring run
       const response = await apiClient.post('/monitor/runs', payload)
