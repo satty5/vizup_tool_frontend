@@ -47,11 +47,19 @@ export default function Monitor() {
       
       goToStep(3)
       
-      // Start monitoring run
-      const response = await apiClient.post('/monitor/runs', {
+      const payload = {
+        mode: 'auto',
         website_url: url,
-        options: ['visibility', 'competition'] // Based on selected options
-      })
+        options: {
+          platforms: ['chatgpt', 'claude', 'gemini'],
+          analysis_types: ['visibility', 'competition']
+        }
+      }
+      
+      console.log('🚀 [Monitor] Sending payload:', payload)
+      
+      // Start monitoring run
+      const response = await apiClient.post('/monitor/runs', payload)
       
       setRunId(response.run_id)
       
@@ -137,8 +145,12 @@ export default function Monitor() {
       
       // Create FormData for file upload
       const formData = new FormData()
+      formData.append('mode', 'csv')
       formData.append('csv_file', file)
-      formData.append('platforms', JSON.stringify(['chatgpt', 'claude'])) // Based on selected options
+      formData.append('options', JSON.stringify({
+        platforms: ['chatgpt', 'claude', 'gemini'],
+        analysis_types: ['visibility', 'competition']
+      }))
       
       // Get auth headers for file upload
       const { data: { session } } = await supabase.auth.getSession()
