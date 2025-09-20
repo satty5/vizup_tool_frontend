@@ -55,7 +55,16 @@ export function AuthProvider({ children }) {
         return { success: false, error: error.message }
       }
       
-      return { success: true, data }
+      // Check if user is automatically signed in after signup
+      if (data?.session && data?.user) {
+        // User is automatically signed in! Update auth state
+        setUser(data.user)
+        // Ensure profile exists
+        if (data.user) await profiles.ensureProfile(data.user)
+        return { success: true, data, autoSignedIn: true }
+      }
+      
+      return { success: true, data, autoSignedIn: false }
     } catch (error) {
       const errorMessage = error.message || 'An unexpected error occurred'
       setError(errorMessage)

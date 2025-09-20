@@ -88,6 +88,26 @@ export const auth = {
   },
   // Sign up with email and password
   signUp: async (email, password) => {
+    if (DEMO_MODE) {
+      // Demo mode - simulate successful signup with auto-signin
+      return {
+        data: {
+          user: {
+            id: `demo-user-${Date.now()}`,
+            email: email,
+            user_metadata: { full_name: email.split('@')[0] },
+            created_at: new Date().toISOString()
+          },
+          session: {
+            access_token: 'demo-token',
+            refresh_token: 'demo-refresh',
+            expires_at: Date.now() + 3600000
+          }
+        },
+        error: null
+      }
+    }
+    
     try {
       const { data, error } = await supabase.auth.signUp({
         email,

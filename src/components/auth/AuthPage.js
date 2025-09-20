@@ -67,8 +67,16 @@ export default function AuthPage() {
       if (isSignUp) {
         const result = await signUp(formData.email, formData.password)
         if (result.success) {
-          setSuccessMessage('Account created! Please check your email for verification.')
-          setFormData({ email: '', password: '', confirmPassword: '' })
+          if (result.autoSignedIn) {
+            // User is automatically signed in after signup!
+            setSuccessMessage('Account created successfully! Redirecting to dashboard...')
+            // The useAuth hook will automatically redirect to dashboard
+            // since the user is now authenticated
+          } else {
+            // Fallback case (email verification required)
+            setSuccessMessage('Account created! Please check your email for verification.')
+            setFormData({ email: '', password: '', confirmPassword: '' })
+          }
         } else {
           setLocalError(result.error || 'Failed to create account')
         }
