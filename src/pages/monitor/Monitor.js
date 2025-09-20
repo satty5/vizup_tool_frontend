@@ -3,22 +3,49 @@ import '../../styles/monitor.css'
 import { apiClient } from '../../lib/api'
 import { useMonitorProgress } from '../../hooks/useMonitorProgress' // Re-enabled with fixes
 import { supabase } from '../../utils/supabase'
+import MonitorDashboard from './MonitorDashboard'
 
 export default function Monitor() {
   const [runId, setRunId] = useState(null)
+  const [showDashboard, setShowDashboard] = useState(false)
+  const [hasExistingData, setHasExistingData] = useState(false)
+  const [checkingExistingData, setCheckingExistingData] = useState(true)
   const { progress, status, currentActivity, stats, error, isConnected } = useMonitorProgress(runId)
   
   useEffect(() => {
-    const urlInput = document.getElementById('m-url')
-    if (urlInput) urlInput.focus()
+    checkForExistingData()
   }, [])
 
-  // Handle completion and auto-redirect to results
+  useEffect(() => {
+    if (!checkingExistingData && !showDashboard) {
+      const urlInput = document.getElementById('m-url')
+      if (urlInput) urlInput.focus()
+    }
+  }, [checkingExistingData, showDashboard])
+
+  const checkForExistingData = async () => {
+    try {
+      // Check if user has previous monitoring data
+      const response = await apiClient.get('/monitor/dashboard/check')
+      if (response.hasData) {
+        setHasExistingData(true)
+        setShowDashboard(true)
+      }
+    } catch (error) {
+      console.log('No existing monitoring data found, showing setup flow')
+      // If API call fails, assume no existing data and show setup flow
+    } finally {
+      setCheckingExistingData(false)
+    }
+  }
+
+  // Handle completion and auto-redirect to dashboard
   useEffect(() => {
     if (status === 'completed') {
-      console.log('🎉 [Monitor] Run completed, redirecting to results...')
+      console.log('🎉 [Monitor] Run completed, redirecting to dashboard...')
       setTimeout(() => {
-        goToStep(4) // Go to results step
+        setShowDashboard(true) // Show the dashboard with new data
+        setHasExistingData(true)
       }, 2000) // 2 second delay to show completion
     }
   }, [status])
@@ -282,6 +309,19 @@ export default function Monitor() {
     }, 1000) // Update every second
   }
 
+  const handleNewAnalysis = () => {
+    setShowDashboard(false)
+    setRunId(null)
+    // Reset to step 1 for new analysis
+    goToStep(1)
+  }
+
+  const handleEditInputs = () => {
+    setShowDashboard(false)
+    // Go to step 2 (setup) to edit inputs
+    goToStep(2)
+  }
+
   const downloadResults = () => {
     const csvContent = `Query,ChatGPT_Response,Claude_Response,Gemini_Response,Google_AI_Response,Sentiment_Score,Brand_Mentioned,Recommendation\n"What is VIZUP?","VIZUP is an AI visibility platform...","VIZUP helps brands...","VIZUP is a tool for...","VIZUP enables...",0.92,Yes,Strong\n"VIZUP pricing","VIZUP offers flexible pricing...","Pricing ranges...","Tiered pricing...","Pricing starts $99...",0.85,Yes,Moderate`
     const blob = new Blob([csvContent], { type: 'text/csv' })
@@ -290,6 +330,23 @@ export default function Monitor() {
     a.href = url
     a.download = 'vizup_ai_responses_enhanced.csv'
     a.click()
+  }
+
+  // Show loading while checking for existing data
+  if (checkingExistingData) {
+    return (
+      <div className="m-root" style={{ background: '#000', color: '#fff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="loading-spinner" style={{ margin: '0 auto 1rem' }}></div>
+          <p>Checking monitoring status...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show dashboard for existing users
+  if (showDashboard) {
+    return <MonitorDashboard onNewAnalysis={handleNewAnalysis} onEditInputs={handleEditInputs} />
   }
 
   return (
