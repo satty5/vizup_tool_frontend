@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../../styles/monitor.css'
 import { apiClient } from '../../lib/api'
-import { useMonitorProgress } from '../../hooks/useMonitorProgress'
+// import { useMonitorProgress } from '../../hooks/useMonitorProgress' // Disabled to prevent auth loops
 import { supabase } from '../../utils/supabase'
 
 export default function Monitor() {
@@ -66,7 +66,10 @@ export default function Monitor() {
       setRunId(response.run_id)
       
       // Simulate realistic progress since SSE isn't working
-      simulateProgress()
+      console.log('🎬 [Monitor] Starting progress simulation...')
+      setTimeout(() => {
+        simulateProgress()
+      }, 500) // Small delay to ensure DOM is ready
       
     } catch (error) {
       console.error('Error starting monitoring:', error)
@@ -180,9 +183,21 @@ export default function Monitor() {
   }
 
   const simulateProgress = () => {
+    console.log('🎯 [Monitor] simulateProgress function called')
     let progress = 0
     let completedQueries = 0
     const totalQueries = 48
+    
+    // Check if DOM elements exist
+    const progressElement = document.querySelector('#m-step3 .m-ring .center')
+    const completedElement = document.querySelector('#m-step3 .m-p-stat:nth-child(3) .m-p-val')
+    const statusElement = document.querySelector('#m-step3 .m-live')
+    
+    console.log('🔍 [Monitor] DOM elements found:', {
+      progressElement: !!progressElement,
+      completedElement: !!completedElement,
+      statusElement: !!statusElement
+    })
     
     const interval = setInterval(() => {
       progress += Math.random() * 12 + 3 // Random progress between 3-15%
