@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider, useAuth } from './hooks/useAuth'
-import Header from './components/layout/Header'
 import AuthPage from './components/auth/AuthPage'
 import Dashboard from './pages/dashboard/Dashboard'
 import Monitor from './pages/monitor/Monitor'
@@ -44,7 +43,6 @@ function AppContent() {
   console.log('✅ [App] User authenticated, showing main app with dashboard')
   return (
     <Router>
-      <Header />
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/monitor" element={<Monitor />} />
