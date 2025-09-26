@@ -43,14 +43,12 @@ export default function SimpleDashboard({ onNewAnalysis, onEditInputs }) {
       label: 'Monitor',
       type: 'expandable',
       children: [
-        { id: 'monitor-overview', label: 'Overview' },
-        { id: 'platforms', label: 'Platforms' },
-        { id: 'queries', label: 'Top Queries' },
-        { id: 'insights', label: 'Insights' },
-        { id: 'data-table', label: 'Data Table' },
+        { id: 'monitor-home', label: 'Home' },
+        { id: 'overall-setup', label: 'Overall Setup' },
+        { id: 'raw-data', label: 'Raw Data' },
         { id: 'response-view', label: 'Response View' },
-        { id: 'reports', label: 'Reports' },
-        { id: 'competitors', label: 'Competitors' }
+        { id: 'query-insights', label: 'Query Insights' },
+        { id: 'visibility-dashboard', label: 'Visibility Dashboard' }
       ]
     },
     {
@@ -760,6 +758,252 @@ export default function SimpleDashboard({ onNewAnalysis, onEditInputs }) {
     )
   }
 
+  // 4. Query Insights - Risks | Opportunities | Hero
+  const renderQueryInsightsContent = () => {
+    const insights = {
+      risks: [
+        { query: 'Natural solutions for digestive issues', issue: 'Zero visibility on Gemini', impact: 'High', recommendation: 'Create targeted content for digestive health' },
+        { query: 'Best Ayurvedic supplements', issue: 'Low mention rate (15%)', impact: 'Medium', recommendation: 'Optimize brand positioning in responses' },
+        { query: 'Herbal remedies for stress', issue: 'Competitors dominating', impact: 'High', recommendation: 'Strengthen stress-relief content strategy' }
+      ],
+      opportunities: [
+        { query: 'Amrutam vs Kapiva comparison', opportunity: '100% share of voice', potential: 'High', action: 'Expand to similar comparison queries' },
+        { query: 'Ashwagandha benefits', opportunity: 'Strong visibility (75%)', potential: 'Medium', action: 'Create content series on key ingredients' },
+        { query: 'Women health supplements', opportunity: 'Growing query trend', potential: 'High', action: 'Target female health segment' }
+      ],
+      heroes: [
+        { query: 'Amrutam vs Kapiva: Which is better', score: '100', platforms: 'ChatGPT, Claude', strength: 'Perfect comparative positioning' },
+        { query: 'Best immunity supplements Ayurveda', score: '92', platforms: 'ChatGPT', strength: 'Strong brand association with immunity' },
+        { query: 'Traditional herbs for modern lifestyle', score: '88', platforms: 'Claude', strength: 'Excellent brand narrative alignment' }
+      ]
+    }
+
+    return (
+      <div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+          
+          {/* Risks */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+          }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#dc2626' }}>
+              🚨 Risks & Threats
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {insights.risks.map((risk, index) => (
+                <div key={index} style={{
+                  padding: '1rem',
+                  border: '1px solid #fecaca',
+                  borderRadius: '12px',
+                  background: 'rgba(254, 226, 226, 0.5)'
+                }}>
+                  <div style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                    {risk.query}
+                  </div>
+                  <div style={{ fontSize: '0.875rem', color: '#dc2626', marginBottom: '0.5rem' }}>
+                    {risk.issue}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                    Impact: {risk.impact} • {risk.recommendation}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Opportunities */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+          }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#059669' }}>
+              🎯 Opportunities
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {insights.opportunities.map((opp, index) => (
+                <div key={index} style={{
+                  padding: '1rem',
+                  border: '1px solid #a7f3d0',
+                  borderRadius: '12px',
+                  background: 'rgba(167, 243, 208, 0.5)'
+                }}>
+                  <div style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                    {opp.query}
+                  </div>
+                  <div style={{ fontSize: '0.875rem', color: '#059669', marginBottom: '0.5rem' }}>
+                    {opp.opportunity}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                    Potential: {opp.potential} • {opp.action}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Heroes */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+          }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#7c3aed' }}>
+              🏆 Hero Queries
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {insights.heroes.map((hero, index) => (
+                <div key={index} style={{
+                  padding: '1rem',
+                  border: '1px solid #c4b5fd',
+                  borderRadius: '12px',
+                  background: 'rgba(196, 181, 253, 0.5)'
+                }}>
+                  <div style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                    {hero.query}
+                  </div>
+                  <div style={{ fontSize: '0.875rem', color: '#7c3aed', marginBottom: '0.5rem' }}>
+                    Score: {hero.score}/100 • {hero.platforms}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                    {hero.strength}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // 5. Visibility Dashboard with Competitor Insights
+  const renderVisibilityDashboardContent = () => {
+    return (
+      <div>
+        {/* Competitor Comparison */}
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '20px',
+          padding: '2rem',
+          marginBottom: '2rem',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+        }}>
+          <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#111827' }}>
+            Competitive Visibility Analysis
+          </h3>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+            {[
+              { brand: 'Amrutam', visibility: '64%', mentions: '47', color: '#059669', trend: '+8%' },
+              { brand: 'Kapiva', visibility: '72%', mentions: '89', color: '#dc2626', trend: '+12%' },
+              { brand: 'Gynoveda', visibility: '43%', mentions: '31', color: '#7c3aed', trend: '-3%' },
+              { brand: 'Dabur', visibility: '91%', mentions: '156', color: '#ea580c', trend: '+5%' }
+            ].map((competitor) => (
+              <div key={competitor.brand} style={{
+                padding: '1.5rem',
+                border: `2px solid ${competitor.color}20`,
+                borderRadius: '16px',
+                background: `${competitor.color}05`,
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '2rem', fontWeight: '700', color: competitor.color, marginBottom: '0.5rem' }}>
+                  {competitor.visibility}
+                </div>
+                <div style={{ fontSize: '1rem', fontWeight: '600', color: '#374151', marginBottom: '0.25rem' }}>
+                  {competitor.brand}
+                </div>
+                <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>
+                  {competitor.mentions} mentions
+                </div>
+                <div style={{ fontSize: '0.75rem', fontWeight: '600', color: competitor.color }}>
+                  {competitor.trend} this month
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Platform-wise Breakdown */}
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '20px',
+          padding: '2rem',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+        }}>
+          <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#111827' }}>
+            Platform Performance Overview
+          </h3>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+            {[
+              { platform: 'ChatGPT', visibility: '68%', queries: '42', topQuery: 'Best immunity supplements', performance: 'Strong' },
+              { platform: 'Claude', visibility: '72%', queries: '38', topQuery: 'Amrutam vs Kapiva comparison', performance: 'Excellent' },
+              { platform: 'Gemini', visibility: '42%', queries: '47', topQuery: 'Ayurvedic herbs benefits', performance: 'Needs Work' }
+            ].map((platform) => (
+              <div key={platform.platform} style={{
+                padding: '1.5rem',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                borderRadius: '16px',
+                background: 'rgba(255, 255, 255, 0.5)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <h4 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '600', color: '#374151' }}>
+                    {platform.platform}
+                  </h4>
+                  <span style={{
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '12px',
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    background: platform.performance === 'Excellent' ? '#dcfce7' : 
+                               platform.performance === 'Strong' ? '#fef3c7' : '#fecaca',
+                    color: platform.performance === 'Excellent' ? '#166534' : 
+                          platform.performance === 'Strong' ? '#92400e' : '#dc2626'
+                  }}>
+                    {platform.performance}
+                  </span>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Visibility Rate</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>{platform.visibility}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Queries Tested</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>{platform.queries}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Top Query</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151', maxWidth: '150px', textAlign: 'right' }}>
+                      {platform.topQuery}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const renderOtherContent = (title, description) => {
     return (
       <div>
@@ -1161,6 +1405,357 @@ export default function SimpleDashboard({ onNewAnalysis, onEditInputs }) {
               Based on Amrutam Analytics Dataset
             </div>
           </div>
+        </div>
+      </div>
+    )
+  }
+
+  // 1. Monitoring Home - Platform | Query type | Query - Metric 1 | Metric 2 ... Metric i
+  const renderMonitoringHomeContent = () => {
+    const homeMetrics = [
+      { platform: 'ChatGPT', queryType: 'Product', query: 'Best Ayurvedic supplement for immunity', visibility: '85%', mentions: '12', shareOfVoice: '40%', responseTime: '2.1s', score: '92/100' },
+      { platform: 'Claude', queryType: 'Comparison', query: 'Amrutam vs Kapiva which is better', visibility: '100%', mentions: '8', shareOfVoice: '100%', responseTime: '2.6s', score: '88/100' },
+      { platform: 'Gemini', queryType: 'Problem', query: 'Natural solution for digestive issues', visibility: '0%', mentions: '0', shareOfVoice: '0%', responseTime: '2.4s', score: '70/100' },
+      { platform: 'ChatGPT', queryType: 'Ingredient', query: 'Benefits of Ashwagandha supplements', visibility: '75%', mentions: '6', shareOfVoice: '25%', responseTime: '1.9s', score: '85/100' },
+      { platform: 'Claude', queryType: 'Usage', query: 'How to use Ayurvedic herbs daily', visibility: '60%', mentions: '4', shareOfVoice: '15%', responseTime: '3.1s', score: '78/100' }
+    ]
+
+    return (
+      <div>
+        {/* Summary Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+          {[
+            { label: 'Total Queries', value: '127', change: '+12 this week', color: '#3b82f6' },
+            { label: 'Avg Visibility', value: '64%', change: '+8% this month', color: '#10b981' },
+            { label: 'Platforms Monitored', value: '3', change: 'ChatGPT, Claude, Gemini', color: '#8b5cf6' },
+            { label: 'Response Quality', value: '84.6', change: 'AI Score', color: '#f59e0b' }
+          ].map((metric, index) => (
+            <div key={index} style={{
+              background: 'rgba(255, 255, 255, 0.7)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '2rem', fontWeight: '700', color: metric.color, marginBottom: '0.5rem' }}>
+                {metric.value}
+              </div>
+              <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.25rem' }}>
+                {metric.label}
+              </div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                {metric.change}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Detailed Metrics Table */}
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '20px',
+          padding: '2rem',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+        }}>
+          <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.125rem', fontWeight: '600', color: '#111827' }}>
+            Platform Performance Matrix
+          </h3>
+          
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
+                  <th style={{ textAlign: 'left', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Platform</th>
+                  <th style={{ textAlign: 'left', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Query Type</th>
+                  <th style={{ textAlign: 'left', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Query</th>
+                  <th style={{ textAlign: 'center', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Visibility</th>
+                  <th style={{ textAlign: 'center', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Mentions</th>
+                  <th style={{ textAlign: 'center', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Share of Voice</th>
+                  <th style={{ textAlign: 'center', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Response Time</th>
+                  <th style={{ textAlign: 'center', padding: '0.75rem', fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {homeMetrics.map((row, index) => (
+                  <tr key={index} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                    <td style={{ padding: '1rem 0.75rem' }}>
+                      <span style={{
+                        padding: '0.25rem 0.75rem',
+                        background: row.platform === 'ChatGPT' ? '#dbeafe' : row.platform === 'Claude' ? '#dcfce7' : '#fef3c7',
+                        color: row.platform === 'ChatGPT' ? '#1e40af' : row.platform === 'Claude' ? '#166534' : '#92400e',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '600'
+                      }}>
+                        {row.platform}
+                      </span>
+                    </td>
+                    <td style={{ padding: '1rem 0.75rem', fontSize: '0.875rem', color: '#374151' }}>{row.queryType}</td>
+                    <td style={{ padding: '1rem 0.75rem', fontSize: '0.875rem', color: '#374151', maxWidth: '200px' }}>
+                      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {row.query}
+                      </div>
+                    </td>
+                    <td style={{ padding: '1rem 0.75rem', textAlign: 'center' }}>
+                      <span style={{
+                        color: parseInt(row.visibility) > 50 ? '#059669' : parseInt(row.visibility) > 0 ? '#d97706' : '#dc2626',
+                        fontWeight: '600'
+                      }}>
+                        {row.visibility}
+                      </span>
+                    </td>
+                    <td style={{ padding: '1rem 0.75rem', textAlign: 'center', fontSize: '0.875rem', color: '#374151' }}>{row.mentions}</td>
+                    <td style={{ padding: '1rem 0.75rem', textAlign: 'center', fontSize: '0.875rem', fontWeight: '600', color: '#374151' }}>{row.shareOfVoice}</td>
+                    <td style={{ padding: '1rem 0.75rem', textAlign: 'center', fontSize: '0.875rem', color: '#6b7280' }}>{row.responseTime}</td>
+                    <td style={{ padding: '1rem 0.75rem', textAlign: 'center' }}>
+                      <span style={{
+                        color: parseInt(row.score) > 85 ? '#059669' : parseInt(row.score) > 75 ? '#d97706' : '#dc2626',
+                        fontWeight: '600'
+                      }}>
+                        {row.score}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // 2. Overall Setup Section - Query Manager | Generator | Evaluator
+  const renderOverallSetupContent = () => {
+    return (
+      <div>
+        {/* Three Main Setup Sections */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+          
+          {/* Query Manager */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+          }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#111827' }}>
+              Query Manager
+            </h3>
+            <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#6b7280' }}>
+              Generate, type, or upload queries for monitoring
+            </p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <button style={{
+                padding: '1rem',
+                border: '2px dashed #d1d5db',
+                borderRadius: '12px',
+                background: 'transparent',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.2s ease'
+              }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🤖</div>
+                <div style={{ fontWeight: '600', color: '#374151' }}>AI Generate Queries</div>
+                <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>Auto-generate based on your industry</div>
+              </button>
+              
+              <button style={{
+                padding: '1rem',
+                border: '2px dashed #d1d5db',
+                borderRadius: '12px',
+                background: 'transparent',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.2s ease'
+              }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
+                <div style={{ fontWeight: '600', color: '#374151' }}>Type Manually</div>
+                <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>Create custom queries one by one</div>
+              </button>
+              
+              <button style={{
+                padding: '1rem',
+                border: '2px dashed #d1d5db',
+                borderRadius: '12px',
+                background: 'transparent',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.2s ease'
+              }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📁</div>
+                <div style={{ fontWeight: '600', color: '#374151' }}>Upload CSV</div>
+                <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>Bulk import from spreadsheet</div>
+              </button>
+            </div>
+            
+            <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px' }}>
+              <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1e40af', marginBottom: '0.25rem' }}>
+                Current Status
+              </div>
+              <div style={{ fontSize: '0.875rem', color: '#374151' }}>
+                127 queries loaded • 5 query types • Ready for processing
+              </div>
+            </div>
+          </div>
+
+          {/* Generator */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+          }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#111827' }}>
+              Generator
+            </h3>
+            <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#6b7280' }}>
+              Platform selection, runs, configurations, and prompts
+            </p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                  Platform Selection
+                </label>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {['ChatGPT', 'Claude', 'Gemini'].map(platform => (
+                    <span key={platform} style={{
+                      padding: '0.5rem 1rem',
+                      background: '#10b981',
+                      color: '#fff',
+                      borderRadius: '12px',
+                      fontSize: '0.75rem',
+                      fontWeight: '600'
+                    }}>
+                      {platform} ✓
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                  Number of Runs
+                </label>
+                <select style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem'
+                }}>
+                  <option>1 run per query</option>
+                  <option>3 runs per query</option>
+                  <option>5 runs per query</option>
+                </select>
+              </div>
+              
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                  Prompt Configuration
+                </label>
+                <textarea style={{
+                  width: '100%',
+                  height: '80px',
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  resize: 'vertical'
+                }} placeholder="Enter custom prompt instructions..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          {/* Evaluator */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.04)'
+          }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.25rem', fontWeight: '700', color: '#111827' }}>
+              Evaluator
+            </h3>
+            <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.875rem', color: '#6b7280' }}>
+              Post-processing levers and controls
+            </p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                  Scoring Weights
+                </label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {[
+                    { label: 'Mention Count', value: '30%' },
+                    { label: 'Share of Voice', value: '40%' },
+                    { label: 'Response Quality', value: '20%' },
+                    { label: 'Response Time', value: '10%' }
+                  ].map(weight => (
+                    <div key={weight.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.875rem', color: '#374151' }}>{weight.label}</span>
+                      <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#6b7280' }}>{weight.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
+                  Analysis Filters
+                </label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {['Competitive Analysis', 'Sentiment Analysis', 'Brand Positioning', 'Content Quality'].map(filter => (
+                    <label key={filter} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <input type="checkbox" defaultChecked style={{ margin: 0 }} />
+                      <span style={{ fontSize: '0.875rem', color: '#374151' }}>{filter}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+          <button style={{
+            padding: '1rem 2rem',
+            background: 'linear-gradient(135deg, #000 0%, #374151 100%)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '12px',
+            fontSize: '1rem',
+            fontWeight: '600',
+            cursor: 'pointer',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)'
+          }}>
+            Start Monitoring Run
+          </button>
+          <button style={{
+            padding: '1rem 2rem',
+            background: 'rgba(255, 255, 255, 0.7)',
+            color: '#374151',
+            border: '1px solid #d1d5db',
+            borderRadius: '12px',
+            fontSize: '1rem',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}>
+            Save Configuration
+          </button>
         </div>
       </div>
     )
@@ -2369,15 +2964,13 @@ export default function SimpleDashboard({ onNewAnalysis, onEditInputs }) {
                 WebkitTextFillColor: 'transparent',
                 letterSpacing: '-0.02em'
               }}>
-                {activeSection === 'dashboard' ? 'AI Visibility Intelligence' :
-                 activeSection === 'monitor-overview' ? 'Monitor Intelligence' :
-                 activeSection === 'platforms' ? 'Platform Analytics' :
-                 activeSection === 'queries' ? 'Query Performance' :
-                 activeSection === 'insights' ? 'AI Insights & Intelligence' :
-                 activeSection === 'data-table' ? 'Data Intelligence' :
-                 activeSection === 'response-view' ? 'Response Intelligence' :
-                 activeSection === 'reports' ? 'Reports & Analytics' :
-                 activeSection === 'competitors' ? 'Competitive Intelligence' :
+                        {activeSection === 'dashboard' ? 'AI Visibility Intelligence' :
+                         activeSection === 'monitor-home' ? 'Monitoring Home' :
+                         activeSection === 'overall-setup' ? 'Overall Setup' :
+                         activeSection === 'raw-data' ? 'Raw Data Management' :
+                         activeSection === 'response-view' ? 'Response View Intelligence' :
+                         activeSection === 'query-insights' ? 'Query Insights & Analysis' :
+                         activeSection === 'visibility-dashboard' ? 'Visibility Dashboard' :
                  activeSection === 'optimize' ? 'Optimization Engine' :
                  activeSection === 'digital-presence' ? 'Digital Presence AI' :
                  activeSection === 'attribution' ? 'Attribution Intelligence' :
@@ -2395,27 +2988,25 @@ export default function SimpleDashboard({ onNewAnalysis, onEditInputs }) {
               alignItems: 'center',
               gap: '0.5rem'
             }}>
-              {activeSection.startsWith('monitor-') || activeSection === 'platforms' || activeSection === 'queries' || activeSection === 'insights' || activeSection === 'data-table' || activeSection === 'response-view' || activeSection === 'reports' || activeSection === 'competitors' ? (
-                <>
-                  <span style={{ opacity: 0.6 }}>Monitor</span>
-                  <div style={{ 
-                    width: '4px', 
-                    height: '4px', 
-                    borderRadius: '50%', 
-                    background: 'rgba(55, 65, 81, 0.3)' 
-                  }}></div>
-                  <span style={{ fontWeight: 600, color: '#111827' }}>
-                    {activeSection === 'monitor-overview' ? 'Overview' :
-                     activeSection === 'platforms' ? 'Platforms' :
-                     activeSection === 'queries' ? 'Top Queries' :
-                     activeSection === 'insights' ? 'Insights' :
-                     activeSection === 'data-table' ? 'Data Table' :
-                     activeSection === 'response-view' ? 'Response View' :
-                     activeSection === 'reports' ? 'Reports' :
-                     activeSection === 'competitors' ? 'Competitors' : ''}
-                  </span>
-                </>
-              ) : (
+                      {['monitor-home', 'overall-setup', 'raw-data', 'response-view', 'query-insights', 'visibility-dashboard'].includes(activeSection) ? (
+                        <>
+                          <span style={{ opacity: 0.6 }}>Monitor</span>
+                          <div style={{
+                            width: '4px',
+                            height: '4px',
+                            borderRadius: '50%',
+                            background: 'rgba(55, 65, 81, 0.3)'
+                          }}></div>
+                          <span style={{ fontWeight: 600, color: '#111827' }}>
+                            {activeSection === 'monitor-home' ? 'Home' :
+                             activeSection === 'overall-setup' ? 'Overall Setup' :
+                             activeSection === 'raw-data' ? 'Raw Data' :
+                             activeSection === 'response-view' ? 'Response View' :
+                             activeSection === 'query-insights' ? 'Query Insights' :
+                             activeSection === 'visibility-dashboard' ? 'Visibility Dashboard' : ''}
+                          </span>
+                        </>
+                      ) : (
                 <span style={{ fontWeight: 600, color: '#111827' }}>
                   {activeSection === 'dashboard' ? 'Real-time AI monitoring and analytics' :
                    activeSection === 'optimize' ? 'AI-powered optimization recommendations' :
@@ -2435,16 +3026,14 @@ export default function SimpleDashboard({ onNewAnalysis, onEditInputs }) {
                     maxWidth: '1400px',
                     margin: '0 auto'
                   }}>
-          {/* Render content based on active section */}
-          {activeSection === 'dashboard' && renderOverviewContent()}
-          {activeSection === 'monitor-overview' && renderOverviewContent()}
-          {activeSection === 'platforms' && renderPlatformsContent()}
-          {activeSection === 'queries' && renderQueriesContent()}
-          {activeSection === 'insights' && renderInsightsContent()}
-          {activeSection === 'data-table' && renderDataTableContent()}
-          {activeSection === 'response-view' && renderResponseViewContent()}
-          {activeSection === 'reports' && renderOtherContent('Reports & Analytics', 'Export detailed CSV reports, schedule automated emails, and create custom analytics dashboards.')}
-          {activeSection === 'competitors' && renderOtherContent('Competitive Intelligence', 'Deep competitive analysis showing how you rank against Kapiva, Gynoveda, and other Ayurvedic brands.')}
+                  {/* Render content based on active section */}
+                  {activeSection === 'dashboard' && renderOverviewContent()}
+                  {activeSection === 'monitor-home' && renderMonitoringHomeContent()}
+                  {activeSection === 'overall-setup' && renderOverallSetupContent()}
+                  {activeSection === 'raw-data' && renderDataTableContent()}
+                  {activeSection === 'response-view' && renderResponseViewContent()}
+                  {activeSection === 'query-insights' && renderQueryInsightsContent()}
+                  {activeSection === 'visibility-dashboard' && renderVisibilityDashboardContent()}
           {activeSection === 'optimize' && renderOtherContent('Optimization Center', 'AI-powered recommendations to improve your visibility across platforms and enhance your digital presence.')}
           {activeSection === 'digital-presence' && renderOtherContent('Digital Presence Management', 'Manage your brand presence across multiple digital platforms with automated monitoring and response suggestions.')}
           {activeSection === 'attribution' && renderOtherContent('Attribution Analytics', 'Track the impact of your AI visibility efforts on business metrics and customer acquisition.')}
