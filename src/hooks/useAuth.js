@@ -15,7 +15,22 @@ export function AuthProvider({ children }) {
     const initializeAuth = async () => {
       try {
         const { session } = await auth.getSession()
-        setUser(session?.user ?? null)
+        console.log('🔍 [useAuth] Initial session check:', {
+          hasSession: !!session,
+          hasUser: !!session?.user,
+          userId: session?.user?.id,
+          userEmail: session?.user?.email,
+          demoMode: process.env.REACT_APP_DEMO_MODE
+        })
+        
+        // Force clear demo users in production
+        if (session?.user?.id?.startsWith('demo-user') && process.env.REACT_APP_DEMO_MODE === 'false') {
+          console.log('🧹 [useAuth] Clearing demo user session in production mode')
+          await auth.signOut()
+          setUser(null)
+        } else {
+          setUser(session?.user ?? null)
+        }
       } catch (error) {
         console.log('Auth initialization failed:', error.message)
         setUser(null)

@@ -16,7 +16,10 @@ function AppContent() {
   console.log('🏠 [App] Rendering AppContent:', {
     hasUser: !!user,
     userEmail: user?.email,
+    userId: user?.id,
     isLoading: loading,
+    demoMode: process.env.REACT_APP_DEMO_MODE,
+    supabaseUrl: process.env.REACT_APP_SUPABASE_URL,
     timestamp: new Date().toISOString()
   })
 
@@ -36,6 +39,13 @@ function AppContent() {
   // Show auth page if not authenticated
   if (!user) {
     console.log('🔐 [App] No user found, showing AuthPage')
+    return <AuthPage />
+  }
+
+  // TEMPORARY DEBUG: Force show AuthPage if user looks like a demo user
+  if (user?.id?.startsWith('demo-user')) {
+    console.log('🎭 [App] Demo user detected, but should show AuthPage in production')
+    // Force logout and show auth page
     return <AuthPage />
   }
 
