@@ -27,10 +27,10 @@ function AppContent() {
   if (loading) {
     console.log('⏳ [App] Showing loading state')
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-950">
         <div className="text-center">
           <div className="spinner mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Loading Vizup Platform...</p>
+          <p className="text-gray-300 font-medium">Loading Vizup Platform...</p>
         </div>
       </div>
     )
@@ -46,6 +46,16 @@ function AppContent() {
   if (user?.id?.startsWith('demo-user')) {
     console.log('🎭 [App] Demo user detected, but should show AuthPage in production')
     // Force logout and show auth page
+    return <AuthPage />
+  }
+
+  // DEBUGGING: Add manual session clear (temporary)
+  if (window.location.search.includes('clear-session')) {
+    console.log('🧹 [App] Manual session clear requested')
+    localStorage.clear()
+    sessionStorage.clear()
+    window.history.replaceState({}, '', window.location.pathname)
+    window.location.reload()
     return <AuthPage />
   }
 
