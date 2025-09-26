@@ -27,10 +27,10 @@ function AppContent() {
   if (loading) {
     console.log('⏳ [App] Showing loading state')
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-950">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="spinner mx-auto mb-4"></div>
-          <p className="text-gray-300 font-medium">Loading Vizup Platform...</p>
+          <p className="text-gray-600 font-medium">Loading Vizup Platform...</p>
         </div>
       </div>
     )
@@ -56,6 +56,12 @@ function AppContent() {
     sessionStorage.clear()
     window.history.replaceState({}, '', window.location.pathname)
     window.location.reload()
+    return <AuthPage />
+  }
+
+  // DEBUGGING: Force show login page (temporary)
+  if (window.location.search.includes('login')) {
+    console.log('🔐 [App] Forced login page display')
     return <AuthPage />
   }
 
