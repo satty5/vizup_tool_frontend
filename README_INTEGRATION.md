@@ -29,3 +29,4 @@ REACT_APP_API_URL=https://vizupauditvisibilityaug25-production.up.railway.app/ap
 - Swap monitor/diagnose/optimize API calls to `apiClient` using endpoints from `docs/BACKEND_API_SPEC.md`.
 
 > Note: Files above are scaffolds and may need endpoint paths to match your backend exactly.
+

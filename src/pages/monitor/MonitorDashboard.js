@@ -442,3 +442,4 @@ export default function MonitorDashboard({ onNewAnalysis, onEditInputs }) {
     </div>
   )
 }
+

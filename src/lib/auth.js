@@ -24,3 +24,4 @@ export const authManager = {
   signOut() { localStorage.removeItem('vizup_token') },
   getToken() { return localStorage.getItem('vizup_token') },
 }
+

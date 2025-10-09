@@ -8,6 +8,7 @@ import Optimize from './pages/optimize/Optimize'
 import Profile from './pages/profile/Profile'
 import Settings from './pages/settings/Settings'
 import Diagnose from './pages/diagnose/Diagnose'
+import DigitalPresenceManagement from './pages/digital-presence/DigitalPresenceManagement'
 
 // Main App Content
 function AppContent() {
@@ -42,29 +43,6 @@ function AppContent() {
     return <AuthPage />
   }
 
-  // TEMPORARY DEBUG: Force show AuthPage if user looks like a demo user
-  if (user?.id?.startsWith('demo-user')) {
-    console.log('🎭 [App] Demo user detected, but should show AuthPage in production')
-    // Force logout and show auth page
-    return <AuthPage />
-  }
-
-  // DEBUGGING: Add manual session clear (temporary)
-  if (window.location.search.includes('clear-session')) {
-    console.log('🧹 [App] Manual session clear requested')
-    localStorage.clear()
-    sessionStorage.clear()
-    window.history.replaceState({}, '', window.location.pathname)
-    window.location.reload()
-    return <AuthPage />
-  }
-
-  // DEBUGGING: Force show login page (temporary)
-  if (window.location.search.includes('login')) {
-    console.log('🔐 [App] Forced login page display')
-    return <AuthPage />
-  }
-
   // Show main application if authenticated
   console.log('✅ [App] User authenticated, showing main app with dashboard')
   return (
@@ -74,6 +52,7 @@ function AppContent() {
         <Route path="/monitor" element={<Monitor />} />
         <Route path="/diagnose" element={<Diagnose />} />
         <Route path="/optimize" element={<Optimize />} />
+        <Route path="/digital-presence" element={<DigitalPresenceManagement />} />
         <Route path="/attribute" element={<ModulePlaceholder title="Attribute" />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />

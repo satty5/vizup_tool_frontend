@@ -37,3 +37,4 @@ create policy "Can update own profile" on public.profiles
 3) Start the app. Sign up and sign in will use Supabase. The first login upserts a profile row.
 
 
+

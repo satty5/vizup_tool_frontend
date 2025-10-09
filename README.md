@@ -200,3 +200,4 @@ Copyright © 2024 Vizup. All rights reserved.
 ---
 
 **Next Steps**: Complete Milestone 2 - Dashboard with AI Visibility Race theme and navigation system.
+
